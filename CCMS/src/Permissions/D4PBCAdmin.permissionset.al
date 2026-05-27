@@ -111,5 +111,6 @@ permissionset 62000 "D4P BC ADMIN"
 
         // Reports
         report "D4P Load Data" = X,
-        report "D4P Get Installed Apps" = X;
+        report "D4P Get Installed Apps" = X,
+        report "D4P Get Environment Updates" = X;
 }

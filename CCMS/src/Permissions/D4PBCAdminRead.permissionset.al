@@ -96,5 +96,6 @@ permissionset 62001 "D4P BC ADMIN READ"
 
         // Reports - needed for telemetry queries
         report "D4P Load Data" = X,
-        report "D4P Get Installed Apps" = X;
+        report "D4P Get Installed Apps" = X,
+        report "D4P Get Environment Updates" = X;
 }
