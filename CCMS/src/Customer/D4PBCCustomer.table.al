@@ -3,6 +3,7 @@ namespace D4P.CCMS.Customer;
 using D4P.CCMS.Environment;
 using D4P.CCMS.Setup;
 using D4P.CCMS.Tenant;
+using D4P.CCMS.Tags;
 using D4P.CCMS.PartnerCenter;
 using Microsoft.Foundation.Address;
 using Microsoft.Foundation.NoSeries;
@@ -155,6 +156,33 @@ table 62000 "D4P BC Customer"
             FieldClass = FlowField;
             ToolTip = 'Number of active sandbox environments for this customer';
         }
+        field(25; Tags; Text[250])
+        {
+            Caption = 'Tags';
+            ToolTip = 'Comma-separated list of tags associated with this customer.';
+
+            trigger OnLookup()
+            var
+                D4PTag: Record "D4P Tag";
+                TagList: Page "D4P Tag List";
+                ChosenTag: Text[50];
+            begin
+                if page.RunModal(page::"D4P Tag List", D4PTag) = Action::OK then begin
+                    ChosenTag := D4PTag.Name;
+                    if Tags = '' then
+                        Tags := ChosenTag
+                    else begin
+                        if not Tags.Contains(ChosenTag) then begin
+
+                            Tags += ',' + ChosenTag;
+                        end else begin
+                            Tags := Tags.Replace(ChosenTag, ''); // If tag already exists, remove it (toggle behavior)                        
+                            if StrPos(Tags, ',,') > 0 then
+                                Tags := Tags.Replace(',,', ','); // Clean up commas
+                        end;
+                    end;
+                    Rec.Modify();
+                end
         field(24; "Partner Center Code"; Code[20])
         {
             Caption = 'Partner Center';
